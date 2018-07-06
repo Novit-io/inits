@@ -22,9 +22,9 @@ format:
 compile:
     stage: build
     script:
-      - go build -race -ldflags "-extldflags '-static'" -o $CI_PROJECT_DIR/cmd/dkl-apply-config
-      - go build -race -ldflags "-extldflags '-static'" -o $CI_PROJECT_DIR/cmd/dkl-system-init
-      - go build -race -ldflags "-extldflags '-static'" -o $CI_PROJECT_DIR/cmd/dkl-initrd-init
+      - go build -race -ldflags "-extldflags '-static'" ./cmd/dkl-apply-config
+      - go build -race -ldflags "-extldflags '-static'" ./cmd/dkl-system-init
+      - go build -race -ldflags "-extldflags '-static'" ./cmd/dkl-initrd-init
     artifacts:
       paths:
         - dkl-apply-config
