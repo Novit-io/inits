@@ -18,7 +18,7 @@ golang.org/x/net/ipv6
 gopkg.in/check.v1
 # gopkg.in/yaml.v2 v2.2.1
 gopkg.in/yaml.v2
-# novit.nc/direktil/pkg v0.0.0-20180703072055-a44d1cbe7fbb
+# novit.nc/direktil/pkg v0.0.0-20180706230842-852aa03280f9
 novit.nc/direktil/pkg/color
 novit.nc/direktil/pkg/config
 novit.nc/direktil/pkg/log

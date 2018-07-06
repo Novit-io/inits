@@ -14,13 +14,24 @@ var (
 )
 
 func main() {
-	configPath := flag.String("config", "config.yaml", "config to load")
+	configPath := flag.String("config", "config.yaml", "config to load (\"-\" for stdin)")
 	doFiles := flag.Bool("files", false, "apply files")
 	flag.Parse()
 
 	log.SetConsole(os.Stderr)
 
-	cfg, err := config.Load(*configPath)
+	var (
+		cfg *config.Config
+		err error
+	)
+
+	if *configPath == "-" {
+		cfg, err = config.Read(os.Stdin)
+
+	} else {
+		cfg, err = config.Load(*configPath)
+	}
+
 	if err != nil {
 		log.Print("failed to load config: ", err)
 	}
