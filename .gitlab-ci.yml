@@ -1,0 +1,32 @@
+image: golang:1.10.3
+
+variables:
+  REPO_NAME: novit.nc/direktil/inits
+
+before_script:
+  - mkdir -p $GOPATH/src/$(dirname $REPO_NAME)
+  - ln -svf $CI_PROJECT_DIR $GOPATH/src/$REPO_NAME
+  - cd $GOPATH/src/$REPO_NAME
+
+stages:
+    - test
+    - build
+
+format:
+    stage: test
+    script:
+      - go fmt ./...
+      - go vet ./...
+      - go test -race ./...
+
+compile:
+    stage: build
+    script:
+      - go build -race -ldflags "-extldflags '-static'" -o $CI_PROJECT_DIR/cmd/dkl-apply-config
+      - go build -race -ldflags "-extldflags '-static'" -o $CI_PROJECT_DIR/cmd/dkl-system-init
+      - go build -race -ldflags "-extldflags '-static'" -o $CI_PROJECT_DIR/cmd/dkl-initrd-init
+    artifacts:
+      paths:
+        - dkl-apply-config
+        - dkl-system-init
+        - dkl-initrd-init
