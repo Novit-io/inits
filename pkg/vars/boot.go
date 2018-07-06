@@ -14,7 +14,7 @@ func BootArgs() [][]byte {
 	ba, err := ioutil.ReadFile("/proc/cmdline")
 	if err != nil {
 		// should not happen
-		panic(fmt.Errorf("failed to read /proc/cmdline: ", err))
+		panic(fmt.Errorf("failed to read /proc/cmdline: %v", err))
 	}
 
 	return bytes.Split(ba, []byte{' '})
