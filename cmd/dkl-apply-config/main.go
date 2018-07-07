@@ -26,9 +26,11 @@ func main() {
 	)
 
 	if *configPath == "-" {
+		log.Print("loading config from stdin")
 		cfg, err = config.Read(os.Stdin)
 
 	} else {
+		log.Print("loading config from ", *configPath)
 		cfg, err = config.Load(*configPath)
 	}
 
@@ -37,6 +39,8 @@ func main() {
 	}
 
 	if *doFiles {
-		apply.Files(cfg, log)
+		if err = apply.Files(cfg, log); err != nil {
+			log.Fatal("failed to apply files: ", err)
+		}
 	}
 }
