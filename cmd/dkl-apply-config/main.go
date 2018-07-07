@@ -40,7 +40,8 @@ func main() {
 
 	if *doFiles {
 		if err = apply.Files(cfg, log); err != nil {
-			log.Fatal("failed to apply files: ", err)
+			log.Taint(dlog.Fatal, "failed to apply files: ", err)
+			os.Exit(1)
 		}
 	}
 }
