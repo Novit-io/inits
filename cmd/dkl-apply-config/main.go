@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"os"
+	"strings"
 
 	"novit.nc/direktil/inits/pkg/apply"
 	"novit.nc/direktil/pkg/config"
@@ -16,6 +17,7 @@ var (
 func main() {
 	configPath := flag.String("config", "config.yaml", "config to load (\"-\" for stdin)")
 	doFiles := flag.Bool("files", false, "apply files")
+	filesFilters := flag.String("files-filters", "*", "comma-separated filters to select files to apply")
 	flag.Parse()
 
 	log.SetConsole(os.Stderr)
@@ -39,7 +41,8 @@ func main() {
 	}
 
 	if *doFiles {
-		if err = apply.Files(cfg, log); err != nil {
+		filters := strings.Split(*filesFilters, ",")
+		if err = apply.Files(cfg, log, filters...); err != nil {
 			log.Taint(dlog.Fatal, "failed to apply files: ", err)
 			os.Exit(1)
 		}

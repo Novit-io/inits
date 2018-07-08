@@ -12,11 +12,30 @@ import (
 	dlog "novit.nc/direktil/pkg/log"
 )
 
+const (
+	authorizedKeysPath = "/root/.ssh/authorized_keys"
+)
+
 // Files writes the files from the given config
-func Files(cfg *config.Config, log *dlog.Log) (err error) {
-	if cfg.RootUser.AuthorizedKeys != nil {
+func Files(cfg *config.Config, log *dlog.Log, filters ...string) (err error) {
+	accept := func(n string) bool { return true }
+
+	if len(filters) > 0 {
+		accept = func(n string) bool {
+			for _, filter := range filters {
+				if matched, err := filepath.Match(filter, n); err != nil {
+					log.Taintf(dlog.Error, "bad filter ignored: %q: %v", filter, err)
+				} else if matched {
+					return true
+				}
+			}
+			return false
+		}
+	}
+
+	if cfg.RootUser.AuthorizedKeys != nil && accept(authorizedKeysPath) {
 		err = writeFile(
-			"/root/.ssh/authorized_keys",
+			authorizedKeysPath,
 			[]byte(strings.Join(cfg.RootUser.AuthorizedKeys, "\n")),
 			0600, 0700, cfg, log,
 		)
@@ -27,6 +46,10 @@ func Files(cfg *config.Config, log *dlog.Log) (err error) {
 	}
 
 	for _, file := range cfg.Files {
+		if !accept(file.Path) {
+			continue
+		}
+
 		mode := file.Mode
 		if mode == 0 {
 			mode = 0644
