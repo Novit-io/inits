@@ -14,14 +14,16 @@ import (
 
 // Files writes the files from the given config
 func Files(cfg *config.Config, log *dlog.Log) (err error) {
-	err = writeFile(
-		"/root/.ssh/authorized_keys",
-		[]byte(strings.Join(cfg.RootUser.AuthorizedKeys, "\n")),
-		0600, 0700, cfg, log,
-	)
+	if cfg.RootUser.AuthorizedKeys != nil {
+		err = writeFile(
+			"/root/.ssh/authorized_keys",
+			[]byte(strings.Join(cfg.RootUser.AuthorizedKeys, "\n")),
+			0600, 0700, cfg, log,
+		)
 
-	if err != nil {
-		return
+		if err != nil {
+			return
+		}
 	}
 
 	for _, file := range cfg.Files {
