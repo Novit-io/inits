@@ -144,6 +144,16 @@ func setupLV(volume config.VolumeDef) {
 		run("lvcreate", "-L", volume.Size, "-n", volume.Name, "storage")
 	}
 
+	// wait the device link
+	devPath := "/dev/storage/" + volume.Name
+	for i := 0; i < 300; i++ {
+		_, err := os.Stat(devPath)
+		if err == nil {
+			break
+		}
+		time.Sleep(100 * time.Millisecond)
+	}
+
 	args := make([]string, 0)
 
 	switch volume.FS {
@@ -153,5 +163,5 @@ func setupLV(volume config.VolumeDef) {
 		args = append(args, "-F")
 	}
 
-	run("mkfs."+volume.FS, append(args, "/dev/storage/"+volume.Name)...)
+	run("mkfs."+volume.FS, append(args, devPath)...)
 }
