@@ -3,13 +3,13 @@ package apply
 import (
 	"fmt"
 	"io/ioutil"
+	"log"
 	"os"
 	"path/filepath"
 	"strings"
 
 	"novit.nc/direktil/inits/pkg/vars"
 	"novit.nc/direktil/pkg/config"
-	dlog "novit.nc/direktil/pkg/log"
 )
 
 const (
@@ -17,14 +17,14 @@ const (
 )
 
 // Files writes the files from the given config
-func Files(cfg *config.Config, log *dlog.Log, filters ...string) (err error) {
+func Files(cfg *config.Config, filters ...string) (err error) {
 	accept := func(n string) bool { return true }
 
 	if len(filters) > 0 {
 		accept = func(n string) bool {
 			for _, filter := range filters {
 				if matched, err := filepath.Match(filter, n); err != nil {
-					log.Taintf(dlog.Error, "bad filter ignored: %q: %v", filter, err)
+					log.Printf("ERROR: bad filter ignored: %q: %v", filter, err)
 				} else if matched {
 					return true
 				}
@@ -37,7 +37,7 @@ func Files(cfg *config.Config, log *dlog.Log, filters ...string) (err error) {
 		err = writeFile(
 			authorizedKeysPath,
 			[]byte(strings.Join(cfg.RootUser.AuthorizedKeys, "\n")),
-			0600, 0700, cfg, log,
+			0600, 0700, cfg,
 		)
 
 		if err != nil {
@@ -63,7 +63,6 @@ func Files(cfg *config.Config, log *dlog.Log, filters ...string) (err error) {
 			mode,
 			0755,
 			cfg,
-			log,
 		)
 
 		if err != nil {
@@ -74,9 +73,7 @@ func Files(cfg *config.Config, log *dlog.Log, filters ...string) (err error) {
 	return
 }
 
-func writeFile(path string, content []byte, fileMode, dirMode os.FileMode,
-	cfg *config.Config, log *dlog.Log) (err error) {
-
+func writeFile(path string, content []byte, fileMode, dirMode os.FileMode, cfg *config.Config) (err error) {
 	if err = os.MkdirAll(filepath.Dir(path), dirMode); err != nil {
 		return
 	}

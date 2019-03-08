@@ -1,0 +1,30 @@
+#!/sbin/openrc-run
+
+description="Direktil user services."
+
+pidfile=/run/direktil/services.pid
+
+depend()
+{
+    need dkl-default
+}
+
+start()
+{
+    mkdir -p $(dirname $pidfile)
+
+    einfo "Starting Direktil services manager"
+    start-stop-daemon --start \
+        --pidfile $pidfile \
+        --background \
+        --exec "/sbin/dkl" \
+        -- init services
+    eend $? "Failed to start Direktil services manager"
+}
+
+stop()
+{
+    einfo "Stopping Direktil services manager"
+    start-stop-daemon --stop --pidfile $pidfile
+    eend $? "Failed to stop Direktil services manager"
+}

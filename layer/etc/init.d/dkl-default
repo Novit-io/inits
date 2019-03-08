@@ -1,0 +1,16 @@
+#!/sbin/openrc-run
+
+description="Direktil default operations."
+
+depend()
+{
+    # need anything?
+    :
+}
+
+start()
+{
+	ebegin "Running Direktil default operations"
+	/sbin/dkl init default
+	eend $? "Direktil default operations failed"
+}

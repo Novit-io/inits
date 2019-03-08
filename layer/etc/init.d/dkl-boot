@@ -1,0 +1,15 @@
+#!/sbin/openrc-run
+
+description="Direktil boot operations."
+
+depend()
+{
+	provide net
+}
+
+start()
+{
+	ebegin "Running Direktil boot operations"
+	/sbin/dkl init boot
+	eend $? "Direktil boot operations failed"
+}
