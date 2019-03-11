@@ -4,7 +4,8 @@ description="Direktil boot operations."
 
 depend()
 {
-	provide net
+    provide net
+    before sysctl
 }
 
 start()
