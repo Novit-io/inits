@@ -2,6 +2,7 @@ package initboot
 
 import (
 	"bytes"
+	"fmt"
 	"log"
 	"net"
 	"os"
@@ -21,7 +22,7 @@ var networkStarted = map[string]bool{}
 func setupNetworking() {
 	cfg := sys.Config()
 	for idx, network := range cfg.Networks {
-		setupNetwork(idx, network)
+		step(fmt.Sprintf("network:%d", idx), func() { setupNetwork(idx, network) })
 	}
 }
 

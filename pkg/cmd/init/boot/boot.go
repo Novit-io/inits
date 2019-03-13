@@ -19,20 +19,14 @@ func Command() (c *cobra.Command) {
 		Run:   run,
 	}
 
-	c.Flags().BoolVar(&doNetwork, "do-network", true, "setup network")
-
 	return
 }
 
 func run(c *cobra.Command, args []string) {
-	setupFiles()
-	setupModules()
-
-	if doNetwork {
-		setupNetworking()
-	}
-
-	setupLVM()
+	step("files", setupFiles)
+	step("modules", setupModules)
+	step("network", setupNetworking)
+	step("lvm", setupLVM)
 }
 
 func setupModules() {
