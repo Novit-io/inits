@@ -10,3 +10,5 @@ require (
 	golang.org/x/sys v0.0.0-20180709060233-1b2967e3c290 // indirect
 	novit.nc/direktil/pkg v0.0.0-20180706230842-852aa03280f9
 )
+
+go 1.13

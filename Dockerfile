@@ -1,19 +1,9 @@
 # ------------------------------------------------------------------------
-from golang:1.12.0 as build
-
-env CGO_ENABLED=0
-
-workdir /src
-add go.mod go.sum /src/
-run go mod download
-
-add . ./
-run go test ./...
-run go install ./cmd/...
+from mcluseau/golang-build:1.13.3
 
 # ------------------------------------------------------------------------
-from alpine:3.9
+from alpine:3.10
 run apk add --update mksquashfs
 
 add layer/ /layer/
-copy --from=build /go/bin/ /layers/sbin/
+copy --from=build /go/bin/ /layer/sbin/
