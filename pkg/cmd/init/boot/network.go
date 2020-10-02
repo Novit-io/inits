@@ -10,7 +10,7 @@ import (
 	"path/filepath"
 	"time"
 
-	ping "github.com/sparrc/go-ping"
+	"github.com/go-ping/ping"
 	"novit.nc/direktil/pkg/config"
 
 	"novit.nc/direktil/inits/pkg/sys"

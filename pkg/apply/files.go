@@ -66,7 +66,8 @@ func Files(cfg *config.Config, filters ...string) (err error) {
 		)
 
 		if err != nil {
-			return
+			log.Print("failed to write file ", file.Path, ": ", err)
+			continue
 		}
 	}
 
@@ -83,6 +84,10 @@ func writeFile(path string, content []byte, fileMode, dirMode os.FileMode, cfg *
 	log.Printf("writing %q, mode %04o, %d bytes", path, fileMode, len(content))
 	if err = ioutil.WriteFile(path, content, fileMode); err != nil {
 		err = fmt.Errorf("failed to write %s: %v", path, err)
+	}
+
+	if chmodErr := os.Chmod(path, fileMode); chmodErr != nil {
+		log.Print("- failed chmod: ", chmodErr)
 	}
 
 	return

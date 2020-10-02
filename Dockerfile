@@ -1,8 +1,8 @@
 # ------------------------------------------------------------------------
-from mcluseau/golang-build:1.13.3
+from mcluseau/golang-builder:1.15.1 as build
 
 # ------------------------------------------------------------------------
-from alpine:3.10
+from alpine:3.12
 run apk add --update mksquashfs
 
 add layer/ /layer/

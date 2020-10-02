@@ -45,7 +45,7 @@ func main() {
 		if *filesFilters != "" {
 			filters = strings.Split(*filesFilters, ",")
 		}
-		if err = apply.Files(cfg, log, filters...); err != nil {
+		if err = apply.Files(cfg /*log,*/, filters...); err != nil {
 			log.Taint(dlog.Fatal, "failed to apply files: ", err)
 			os.Exit(1)
 		}
