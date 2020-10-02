@@ -1,6 +1,6 @@
 module novit.nc/direktil/inits
 
-go 1.14
+go 1.15
 
 require (
 	github.com/fsnotify/fsnotify v1.4.9
@@ -13,5 +13,3 @@ require (
 	gopkg.in/yaml.v2 v2.3.0 // indirect
 	novit.nc/direktil/pkg v0.0.0-20191211161950-96b0448b84c2
 )
-
-go 1.13
