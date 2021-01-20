@@ -80,9 +80,10 @@ func run(_ *cobra.Command, args []string) {
 		for _, path := range paths {
 			existing[path] = true
 
+			target := "/" + path
+
 			fmt.Println("linking", path)
 
-			target := "/" + path
 			os.Remove(target)
 
 			os.MkdirAll(filepath.Dir(target), 0755)
